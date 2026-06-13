@@ -44,7 +44,7 @@
                             hx-swap="innerHTML transition:true"
                             hx-push-url="{% url 'messages' %}"
                             class="bg-neutral-200/70 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-md px-7 py-2">
-                            Message
+                            ส่งข้อความ
                     </button>
                     {% endif %}
                     <button @click="modalBox = true"
@@ -67,7 +67,7 @@
                             <span id="following_count_{{ profile_user.username }}" class="font-bold mr-1 tabular-nums">
                                 {{ profile_user.is_follower.count }}
                             </span>
-                            ที่ท่านติดตาม
+                            การติดตาม
                     </button>
                     <button @click="modalBox = true" class="hover:underline"
                             hx-get="{% url 'profile' profile_user.username %}?followers=true"
@@ -76,13 +76,13 @@
                             <span id="followers_count_{{ profile_user.username }}" class="font-bold mr-1 tabular-nums">
                                 {{ profile_user.is_followed.count }}
                             </span>
-                            ผู้ติดตามท่าน
+                            ผู้ติดตาม
                     </button>
                     <div>
                         <span id="post_user_likes" class="font-bold mr-1">
                             {{ profile_user_likes }}
                         </span>
-                        ผู้ชื่นชอบท่าน
+                        ผู้ชื่นชอบ
                     </div>
                 </div>
                 {% if profile_user.bio %}
