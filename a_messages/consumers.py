@@ -13,6 +13,22 @@ class ChatConsumer(WebsocketConsumer):
             return
         
         self.chat_id = self.scope["url_route"]["kwargs"]["chat_id"]
+        
+        # Check if conversation exists and user is a participant
+        try:
+            from .models import Conversation, ConvUser
+            conversation = Conversation.objects.get(id=self.chat_id)
+            
+            # Check if user is a participant
+            if not ConvUser.objects.filter(conversation=conversation, user=self.user).exists():
+                self.close()
+                return
+                
+        except Conversation.DoesNotExist:
+            # Conversation doesn't exist - close connection without error
+            self.close()
+            return
+        
         self.group_name = f"chat_{self.chat_id}"
         
         async_to_sync(self.channel_layer.group_add)(
@@ -25,7 +41,7 @@ class ChatConsumer(WebsocketConsumer):
         ConvUser.objects.filter(
             conversation_id=self.chat_id,
             user=self.user
-        ).update(is_live=True, unread_count=0, last_seen_at=timezone.now()) 
+        ).update(is_live=True, unread_count=0, last_seen_at=timezone.now())
         
         
     def disconnect(self, close_code):
