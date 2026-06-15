@@ -20,6 +20,7 @@ class ChatConsumer(WebsocketConsumer):
             conversation = Conversation.objects.get(id=self.chat_id)
             
             # Check if user is a participant
+            # REMOVED the extra self.close() here
             if not ConvUser.objects.filter(conversation=conversation, user=self.user).exists():
                 self.close()
                 return
@@ -43,7 +44,6 @@ class ChatConsumer(WebsocketConsumer):
             user=self.user
         ).update(is_live=True, unread_count=0, last_seen_at=timezone.now())
         
-        
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
             self.group_name,
@@ -54,7 +54,6 @@ class ChatConsumer(WebsocketConsumer):
             conversation_id=self.chat_id,
             user=self.user
         ).update(is_live=False, unread_count=0, last_seen_at=timezone.now()) 
-        
         
     def broadcast_message(self, event):
         message = Message.objects.get(id=event["message_id"])
