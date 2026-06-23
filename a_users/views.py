@@ -9,6 +9,7 @@ import random
 import threading
 from django.core.cache import cache
 from django.core.mail import EmailMessage
+from django.conf import settings
 from allauth.account.models import EmailAddress
 from .forms import ProfileForm, EmailForm, BirthdayForm 
 
@@ -89,9 +90,9 @@ def verification_code(request):
     
     code = str(random.randint(100000, 999999))
     cache.set(f"verification_code_{email}", code, timeout=300)
-    subject = "Your TikTok Verification Code"
+    subject = "Your KokKokKok Verification Code"
     message = f"Use this code to sign up: {code}. It expires in 5 minutes."
-    sender = "no-reply@tiktok-clone.com"
+    sender = settings.DEFAULT_FROM_EMAIL  # Changed from hardcoded value
     recipients = [email]
     
     email_thread = threading.Thread(target=send_email_async, args=(subject, message, sender, recipients))
