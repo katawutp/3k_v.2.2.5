@@ -222,11 +222,14 @@ AUTH_USER_MODEL = 'a_users.CustomUser'
 if ENVIRONMENT == 'development':
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    # SendGrid configuration for production
-    EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-    SENDGRID_API_KEY = env('SENDGRID_API_KEY', default="")
-    SENDGRID_SANDBOX_MODE_IN_DEBUG = False
-    DEFAULT_FROM_EMAIL = "noreply@mail.3kok.app"
+    # SendGrid SMTP Configuration
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.sendgrid.net'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = 'apikey'  # Literally the word 'apikey'
+    EMAIL_HOST_PASSWORD = env('SENDGRID_API_KEY', default="")
+    DEFAULT_FROM_EMAIL = "noreply@sendgrid.net"  # Use SendGrid's default
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/' 
