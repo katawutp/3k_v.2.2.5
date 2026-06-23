@@ -401,6 +401,55 @@ wheels = [
 ]
 
 [[package]]
+name = "kokkokkok"
+version = "2.2.4"
+source = { virtual = "." }
+dependencies = [
+    { name = "channels" },
+    { name = "channels-redis" },
+    { name = "daphne" },
+    { name = "dj-database-url" },
+    { name = "django" },
+    { name = "django-allauth", extra = ["socialaccount"] },
+    { name = "django-browser-reload" },
+    { name = "django-environ" },
+    { name = "django-htmx" },
+    { name = "django-resized" },
+    { name = "pillow" },
+    { name = "psycopg2-binary" },
+    { name = "requests" },
+    { name = "sendgrid-django" },
+    { name = "whitenoise" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "setuptools" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "channels", specifier = "==4.3.2" },
+    { name = "channels-redis", specifier = "==4.3.0" },
+    { name = "daphne", specifier = "==4.2.1" },
+    { name = "dj-database-url", specifier = "==3.1.0" },
+    { name = "django", specifier = "==5.2.3" },
+    { name = "django-allauth", extras = ["socialaccount"], specifier = ">=65.11.1" },
+    { name = "django-browser-reload", specifier = ">=1.18.0" },
+    { name = "django-environ", specifier = "==0.12.0" },
+    { name = "django-htmx", specifier = "==1.23.1" },
+    { name = "django-resized", specifier = "==1.0.3" },
+    { name = "pillow", specifier = "==11.3.0" },
+    { name = "psycopg2-binary", specifier = "==2.9.11" },
+    { name = "requests", specifier = "==2.32.5" },
+    { name = "sendgrid-django", specifier = "==4.2.0" },
+    { name = "whitenoise", specifier = "==6.11.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "setuptools", specifier = ">=82.0.1" }]
+
+[[package]]
 name = "msgpack"
 version = "1.1.2"
 source = { registry = "https://pypi.org/simple" }
@@ -601,6 +650,15 @@ wheels = [
 ]
 
 [[package]]
+name = "python-http-client"
+version = "3.3.7"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/56/fa/284e52a8c6dcbe25671f02d217bf2f85660db940088faf18ae7a05e97313/python_http_client-3.3.7.tar.gz", hash = "sha256:bf841ee45262747e00dec7ee9971dfb8c7d83083f5713596488d67739170cea0", size = 9377, upload-time = "2022-03-09T20:23:56.386Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/29/31/9b360138f4e4035ee9dac4fe1132b6437bd05751aaf1db2a2d83dc45db5f/python_http_client-3.3.7-py3-none-any.whl", hash = "sha256:ad371d2bbedc6ea15c26179c6222a78bc9308d272435ddf1d5c84f068f249a36", size = 8352, upload-time = "2022-03-09T20:23:54.862Z" },
+]
+
+[[package]]
 name = "redis"
 version = "7.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -623,6 +681,27 @@ sdist = { url = "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl", hash = "sha256:2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6", size = 64738, upload-time = "2025-08-18T20:46:00.542Z" },
 ]
+
+[[package]]
+name = "sendgrid"
+version = "3.6.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-http-client" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6e/d3/c8e9025836c742608f64b775c0d95df092ca444afae8188a7dc0a91a2c71/sendgrid-3.6.5.tar.gz", hash = "sha256:d1af52f8cbb900bf79e28aa08102a503f5e26489c7b9f1d9750758a4b27c84d1", size = 14485, upload-time = "2017-03-30T17:40:08.483Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d6/be/5c2cf158c9036224676b3b01042c27d722fba63b46cb87a4fdaf24fa3621/sendgrid-3.6.5-py2.py3-none-any.whl", hash = "sha256:9fba62068dd13922004b6a1676e21c6435709aaf7c2b978cdf1206e3d2196c60", size = 27776, upload-time = "2017-03-30T17:40:13.492Z" },
+]
+
+[[package]]
+name = "sendgrid-django"
+version = "4.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sendgrid" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f5/94/4749ff4acae2c2ca89c5acdf8449494ef4fbc4254a705866f07c6774ea8b/sendgrid-django-4.2.0.tar.gz", hash = "sha256:fef60ba37d588e5e1c4dcbb3b8b7f8c16920e3e89432de357f6abd6157c4f5f4", size = 5001, upload-time = "2017-12-19T07:55:21.59Z" }
 
 [[package]]
 name = "service-identity"
@@ -656,53 +735,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/e5/40/edede8dd6977b0d3d
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a9/5c/bfd6bd0bf979426d405cc6e71eceb8701b148b16c21d2dc3c261efc61c7b/sqlparse-0.5.3-py3-none-any.whl", hash = "sha256:cf2196ed3418f3ba5de6af7e82c694a9fbdbfecccdfc72e281548517081f16ca", size = 44415, upload-time = "2024-12-10T12:05:27.824Z" },
 ]
-
-[[package]]
-name = "tiktok"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "channels" },
-    { name = "channels-redis" },
-    { name = "daphne" },
-    { name = "dj-database-url" },
-    { name = "django" },
-    { name = "django-allauth", extra = ["socialaccount"] },
-    { name = "django-browser-reload" },
-    { name = "django-environ" },
-    { name = "django-htmx" },
-    { name = "django-resized" },
-    { name = "pillow" },
-    { name = "psycopg2-binary" },
-    { name = "requests" },
-    { name = "whitenoise" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "setuptools" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "channels", specifier = "==4.3.2" },
-    { name = "channels-redis", specifier = "==4.3.0" },
-    { name = "daphne", specifier = "==4.2.1" },
-    { name = "dj-database-url", specifier = "==3.1.0" },
-    { name = "django", specifier = "==5.2.3" },
-    { name = "django-allauth", extras = ["socialaccount"], specifier = ">=65.11.1" },
-    { name = "django-browser-reload", specifier = ">=1.18.0" },
-    { name = "django-environ", specifier = "==0.12.0" },
-    { name = "django-htmx", specifier = "==1.23.1" },
-    { name = "django-resized", specifier = "==1.0.3" },
-    { name = "pillow", specifier = "==11.3.0" },
-    { name = "psycopg2-binary", specifier = "==2.9.11" },
-    { name = "requests", specifier = "==2.32.5" },
-    { name = "whitenoise", specifier = "==6.11.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [{ name = "setuptools", specifier = ">=82.0.1" }]
 
 [[package]]
 name = "twisted"

@@ -1,7 +1,7 @@
 [project]
-name = "tiktok"
-version = "0.1.0"
-description = "Add your description here"
+name = "KokKokKok"
+version = "2.2.4"
+description = "ก๊อกๆๆ - 3Kok SuperApp"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -19,6 +19,7 @@ dependencies = [
     "psycopg2-binary==2.9.11",
     "requests==2.32.5",
     "whitenoise==6.11.0",
+    "sendgrid-django==4.2.0",   # <-- Added this line
 ]
 
 [dependency-groups]
