@@ -18,7 +18,7 @@ RUN pip install --upgrade pip && pip install uv
 RUN uv sync --no-dev
 
 # Force install sendgrid-django (uv sync may skip it)
-RUN pip install sendgrid-django==4.2.0
+# RUN pip install sendgrid-django==4.2.0
 
 ENV PATH="/app/.venv/bin:$PATH"
 
