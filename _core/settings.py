@@ -229,7 +229,7 @@ else:
     EMAIL_USE_TLS = True
     EMAIL_HOST_USER = 'apikey'
     EMAIL_HOST_PASSWORD = env('SENDGRID_API_KEY', default="")
-    DEFAULT_FROM_EMAIL = "noreply@mail.3kok.app"  # Update this to your verified sender
+    DEFAULT_FROM_EMAIL = "easterncyber.com@gmail.com"  # Your verified sender
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/' 
