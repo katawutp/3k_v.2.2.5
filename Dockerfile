@@ -5,20 +5,18 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Install system-level packages
+# Install system-level packages (including FFmpeg)
 RUN apt-get update && apt-get install -y \
     build-essential \
     nodejs \
     npm \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # Django dependencies
 COPY pyproject.toml uv.lock ./
 RUN pip install --upgrade pip && pip install uv
 RUN uv sync --no-dev
-
-# Force install sendgrid-django (uv sync may skip it)
-# RUN pip install sendgrid-django==4.2.0
 
 ENV PATH="/app/.venv/bin:$PATH"
 
