@@ -23,15 +23,28 @@ SECRET_KEY = env('SECRET_KEY', default="secret-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENVIRONMENT == 'development'
 
-# ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
-# Hardcode for production
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+# ALLOWED_HOSTS - Updated for Railway and Fly.io
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[
+    "localhost", 
+    "127.0.0.1",
+    ".railway.app",
+    ".fly.dev",
+    "v224.3kok.app",
+    "v225.3kok.app",
+    "3k-v224.fly.dev",
+    "3k-v225.fly.dev"
+])
 
-# Also hardcode CSRF_TRUSTED_ORIGINS
-# CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=["http://localhost", "http://127.0.0.1"])
+# CSRF_TRUSTED_ORIGINS - Updated for Railway and Fly.io
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[
     "http://localhost", 
-    "http://127.0.0.1"
+    "http://127.0.0.1",
+    "https://*.railway.app",
+    "http://*.railway.app",
+    "https://*.fly.dev",
+    "http://*.fly.dev",
+    "https://v224.3kok.app",
+    "https://v225.3kok.app"
 ])
 
 # Application definition
@@ -84,6 +97,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Moved up for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,7 +106,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 if DEBUG:
     MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
@@ -142,7 +155,6 @@ else:
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-import dj_database_url
 if ENVIRONMENT == 'production' or POSTGRES_LOCALLY: 
     DATABASES = {
         'default': dj_database_url.parse(env("DATABASE_URL", default="sqlite:///db.sqlite3"))
@@ -194,9 +206,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [ BASE_DIR / "static" ]
 STATIC_ROOT = BASE_DIR / 'staticfiles' 
 
-MEDIA_URL = '/media/'  # Add leading slash
+# Whitenoise configuration for serving static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# For both development and production, use BASE_DIR / 'media'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
