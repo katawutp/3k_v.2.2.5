@@ -76,6 +76,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+    
+    # OTP Apps
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_email',
 ]
 
 
@@ -106,6 +111,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'django_otp.middleware.OTPMiddleware',  # Add OTP middleware
 ]
 if DEBUG:
     MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
@@ -213,16 +219,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# if ENVIRONMENT == 'production' or POSTGRES_LOCALLY:
-#     STORAGES = {
-#         "default": {
-#             "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-#         },
-#         "staticfiles": {
-#             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-#         },
-#     }
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -230,18 +226,40 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'a_users.CustomUser'
 
-# Email Configuration
-# Production uses SendGrid, development uses console output
+# Email Configuration with SendGrid
 if ENVIRONMENT == 'development':
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
+    # SendGrid SMTP Configuration
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = 'apikey'
+    EMAIL_HOST_USER = 'apikey'  # This is the username SendGrid requires
     EMAIL_HOST_PASSWORD = env('SENDGRID_API_KEY', default="")
     DEFAULT_FROM_EMAIL = "no-reply@3kok.app"  # Your custom domain
+    
+    # Alternative: Use SendGrid's Django package (uncomment if you install sendgrid-django)
+    # EMAIL_BACKEND = 'sendgrid_django.sendgrid_backend.SendGridBackend'
+    # SENDGRID_API_KEY = env('SENDGRID_API_KEY', default="")
+    # SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+    # SENDGRID_ECHO_TO_STDOUT = False
+
+# OTP Settings
+OTP_EMAIL_SENDER = DEFAULT_FROM_EMAIL
+OTP_EMAIL_SUBJECT = "Your OTP Code for 3kok"
+OTP_EMAIL_BODY_TEMPLATE = """
+Hello {user},
+
+Your verification code for 3kok is: {otp_code}
+
+This code will expire in 10 minutes.
+
+If you didn't request this code, please ignore this email.
+
+Best regards,
+3kok Team
+"""
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/' 
@@ -255,7 +273,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 SOCIALACCOUNT_ADAPTER = "a_users.adapters.socialSignupAdapter"
 
-# Add at the very end of settings.py
+# Logging Configuration
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -266,6 +284,11 @@ LOGGING = {
     },
     'loggers': {
         'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        # Add email logging
+        'django.core.mail': {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
