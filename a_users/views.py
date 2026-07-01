@@ -195,3 +195,44 @@ def delete_account(request):
         return redirect('index')
     
     return render(request, 'a_users/profile_delete.html')
+# OTP Views
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .otp_utils import generate_otp_code, send_otp_email, store_otp_in_session, verify_otp
+
+@login_required
+def send_otp_view(request):
+    """Send OTP to user's email"""
+    if request.method == 'POST':
+        user = request.user
+        if not user.email:
+            messages.error(request, "No email address associated with your account.")
+            return redirect('profile', username=user.username)
+        
+        otp_code = generate_otp_code()
+        store_otp_in_session(request, otp_code)
+        
+        if send_otp_email(user.email, otp_code, user.username):
+            messages.success(request, "OTP sent to your email address.")
+        else:
+            messages.error(request, "Failed to send OTP. Please try again.")
+        
+        return redirect('verify_otp')
+    
+    return render(request, 'a_users/send_otp.html')
+
+@login_required
+def verify_otp_view(request):
+    """Verify OTP code"""
+    if request.method == 'POST':
+        otp_input = request.POST.get('otp_code')
+        is_valid, message = verify_otp(request, otp_input)
+        
+        if is_valid:
+            messages.success(request, "OTP verified successfully!")
+            return redirect('profile', username=request.user.username)
+        else:
+            messages.error(request, message)
+    
+    return render(request, 'a_users/verify_otp.html')
