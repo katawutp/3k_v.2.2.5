@@ -5,15 +5,16 @@ from django.conf.urls.static import static
 from allauth.account.views import PasswordChangeView
 from a_posts.views import *
 from a_users.views import profile_view, index_view
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
-    path('', home_view, name="home"),
+    path('', cache_page(60 * 15)(home_view), name="home"),
     path('admin/', admin.site.urls),
     path("accounts/password/change/", PasswordChangeView.as_view(success_url=reverse_lazy("settings")), name="account_change_password"),
     path('accounts/', include('allauth.urls')),
     path('login/', index_view, name="index"),
     path('@<username>/', profile_view, name="profile"),
-    path('explore/', explore_view, name="explore"),
+    path('explore/', cache_page(60 * 5)(explore_view), name="explore"),
     path('upload/', upload_view, name="upload"),
     path('post/', include("a_posts.urls")),
     path('profile/', include("a_users.urls")),
