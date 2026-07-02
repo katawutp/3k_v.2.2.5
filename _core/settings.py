@@ -227,6 +227,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'a_users.CustomUser'
 
 # Email Configuration with SendGrid
+# Email Configuration with SendGrid
+# DEFAULT_FROM_EMAIL is defined here for all environments
+DEFAULT_FROM_EMAIL = "no-reply@3kok.app"
+
 if ENVIRONMENT == 'development':
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
@@ -235,15 +239,9 @@ else:
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = 'apikey'  # This is the username SendGrid requires
+    EMAIL_HOST_USER = 'apikey'
     EMAIL_HOST_PASSWORD = env('SENDGRID_API_KEY', default="")
-    DEFAULT_FROM_EMAIL = "no-reply@3kok.app"  # Your custom domain
-    
-    # Alternative: Use SendGrid's Django package (uncomment if you install sendgrid-django)
-    # EMAIL_BACKEND = 'sendgrid_django.sendgrid_backend.SendGridBackend'
-    # SENDGRID_API_KEY = env('SENDGRID_API_KEY', default="")
-    # SENDGRID_SANDBOX_MODE_IN_DEBUG = False
-    # SENDGRID_ECHO_TO_STDOUT = False
+    # DEFAULT_FROM_EMAIL is now defined at the top
 
 # OTP Settings
 OTP_EMAIL_SENDER = DEFAULT_FROM_EMAIL
