@@ -488,3 +488,4 @@ zope-interface==8.1.1 \
     --hash=sha256:efef80ddec4d7d99618ef71bc93b88859248075ca2e1ae1c78636654d3d55533 \
     --hash=sha256:fc65f5633d5a9583ee8d88d1f5de6b46cd42c62e47757cfe86be36fb7c8c4c9b
     # via twisted
+django-otp==1.7.0
