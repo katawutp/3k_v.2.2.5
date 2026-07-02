@@ -294,3 +294,15 @@ LOGGING = {
         },
     },
 }
+
+# At the very bottom of settings.py, add this:
+import os
+print("=" * 60)
+print("ENVIRONMENT VARIABLES DEBUG:")
+print(f"SECRET_KEY set: {'Yes' if os.getenv('SECRET_KEY') else 'No'}")
+print(f"DJANGO_SECRET_KEY set: {'Yes' if os.getenv('DJANGO_SECRET_KEY') else 'No'}")
+print(f"CSRF_TRUSTED_ORIGINS env: {os.getenv('CSRF_TRUSTED_ORIGINS', 'NOT SET')}")
+print(f"CSRF_TRUSTED_ORIGINS parsed: {CSRF_TRUSTED_ORIGINS}")
+print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
+print(f"DEBUG: {os.getenv('DEBUG', 'NOT SET')}")
+print("=" * 60)
