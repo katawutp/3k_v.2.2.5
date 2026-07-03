@@ -34,3 +34,30 @@
 
 </body>
 </html>
+<script>
+    // Ensure CSRF token is sent with all HTMX requests
+    document.addEventListener('htmx:configRequest', function(evt) {
+        // Get CSRF token from cookie
+        const csrfToken = document.cookie.match(/csrftoken=([^;]+)/)?.[1];
+        if (csrfToken) {
+            evt.detail.headers['X-CSRFToken'] = csrfToken;
+        }
+    });
+
+    // Also ensure it works for regular form submissions
+    document.addEventListener('DOMContentLoaded', function() {
+        // If any form doesn't have CSRF token, add it
+        document.querySelectorAll('form[method="post"]').forEach(function(form) {
+            if (!form.querySelector('[name=csrfmiddlewaretoken]')) {
+                const csrfToken = document.cookie.match(/csrftoken=([^;]+)/)?.[1];
+                if (csrfToken) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'csrfmiddlewaretoken';
+                    input.value = csrfToken;
+                    form.prepend(input);
+                }
+            }
+        });
+    });
+</script>
